@@ -17,15 +17,15 @@ jogo1.iniciaJogo();
 //jogo1.destribuir();
 
 //jogo1.getPecas(jogador1);
-jogador1.printJogo();
+////jogador1.printJogo();
 //jogo1.getPecas(jogador2);
-jogador2.printJogo();
+//jogador2.printJogo();
 //jogo1.getPecas(jogador3);
-jogador3.printJogo();
+//jogador3.printJogo();
 //jogo1.getPecas(jogador4);
-jogador4.printJogo();
+//jogador4.printJogo();
 //jogo1.getPecas(jogador4);
 
-console.log('Jogador com carroca de sena: '+jogo1.getSaido().getNome());
+//console.log('Jogador com carroca de sena: '+jogo1.getSaido().getNome());
 console.log('====================================================================================')
 

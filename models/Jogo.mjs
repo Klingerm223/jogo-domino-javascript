@@ -4,53 +4,97 @@ import { jogoDomino } from "./jogoDomino.mjs";
 export class Jogo {
     #mesaId;
     #mesa = new jogoDomino();
-    #saido; 
+    #saido;
+    #posicaoInicial;
 
-    //cadeiras numeradas no sentido anti-horario cad1 a esquerda fica cad2 a esq fica cad3 e esq. fica cad4
-    #cadeira1;
-    #cadeira2;
-    #cadeira3;
-    #cadeira4;
+    //cadeiras numeradas no sentido horario formato de cruz numero1 na parte inferior
+    // #cadeira1;
+    // #cadeira2;
+    // #cadeira3;
+    // #cadeira4;
+    //#cadeiras;
 
     constructor(vet, mesaId) {
-        this.#cadeira1 = vet[0];
-        this.#cadeira2 = vet[1];
-        this.#cadeira3 = vet[2];
-        this.#cadeira4 = vet[3];
         this.#mesaId = mesaId;
-        this.#saido =null;
+        this.#saido = null;
+        this.cadeiras = vet;
+        this.#posicaoInicial = null;
     }
 
-    _geraNumeroRamdon() {
-        return Math.floor(Math.random() * 28) + 1;
-    }
 
 
     iniciaJogo() {
         console.log('Id: ' + this.#mesaId);
         //console.log(this.#cadeira1.getNome());
+        //var cento = ponta1 = ponta2 = ponta3 = ponta4 = 0;
         this._destribuir();
+        this._jogar();
 
     }
+
+    _proximoJogador() {
+        this.#posicaoInicial == 3 ? this.#posicaoInicial = 0 : this.#posicaoInicial++;
+        return this.cadeiras[this.#posicaoInicial]
+    }
+
+    _jogar() {
+        
+        var carrocaSena = this.#mesa.getPedraPorId(28); //carrocaDeSena
+        var jogadorDaVez = this._getSaido();
+        var pedra = carrocaSena;
+        var x = 0;
+        //const gerarNumeroUnico = this.createRandomNumberGenerator(1, 28);
+        console.log("saido: " + jogadorDaVez.getNome());
+
+        while ( jogadorDaVez.numeroDePecas() >= 1 )
+        {
+
+            if ( jogadorDaVez.temPedraAnalitica( pedra ) )
+            {
+                jogadorDaVez.joga( pedra );
+                // console.log(jogadorDaVez.getNome() +" jogou");
+            }
+            else {
+                //console.log(jogadorDaVez.getNome() +" passou");
+            }
+            // x = this._getRandomNumber();
+            if (jogadorDaVez.numeroDePecas() != 0) {
+                jogadorDaVez = this._proximoJogador();
+                pedra = this.#mesa.getPedraPorId( this._getRandomNumber() );
+            }
+            
+        }
+        console.log("jogo terminado - Bateu :" + jogadorDaVez.getNome());
+
+    }
+
+
+
     _setSaido(jogador) {
         this.#saido = jogador;
     }
-    getSaido() {
-        return this.#saido ;
+    _getSaido() {
+        return this.#saido;
+    }
+
+    _getRandomNumber() {
+        return Math.floor(Math.random() * 28) + 1;
     }
 
     _destribuir() {
 
         var vet = [];
         var x = 0;
-        var cadeiras = [this.#cadeira1, this.#cadeira2, this.#cadeira3, this.#cadeira4];
+
         const gerarNumeroUnico = this.createRandomNumberGenerator(1, 28);
 
-        cadeiras.forEach(jogador => {
-            for (var i = 1; i <= 7; i++) {
+        this.cadeiras.forEach(jogador => {
+            // console.log(this.cadeiras.indexOf(jogador))
+            for (var i = 0; i <= 6; i++) {
                 x = gerarNumeroUnico();
                 if (x == 28) {
                     this._setSaido(jogador);
+                    this.#posicaoInicial = this.cadeiras.indexOf(jogador);
                 }
                 vet[i] = this.#mesa.getPedraPorId(x);
             }
@@ -59,7 +103,7 @@ export class Jogo {
         })
     }
 
-    getPecas(jogador) {
+    _getPecas(jogador) {
         return jogador.getPedras();
     }
 

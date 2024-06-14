@@ -1,7 +1,7 @@
 export class Jogador {
     #nome;
     #idade;
-    #jogo = [];
+    #jogo = new Set();
 
     constructor(nome, idade) {
         this.#nome = nome;
@@ -17,7 +17,10 @@ export class Jogador {
     }
 
     recebePedra(pedras) {
-        this.#jogo = pedras;
+        pedras.forEach(pedra => {
+            this.#jogo.add(pedra) ;    
+        })
+        
         // return null;
     }
 
@@ -33,5 +36,31 @@ export class Jogador {
 
         console.log(this.getNome() + ': ' + aux);
     }
+
+    numeroDePecas() {
+       return this.#jogo.size;
+    }
+
+    joga(pedra) {
+        this.#jogo.delete(pedra);
+    }
+
+    temPedra(pedra) {
+        return this.#jogo.has(pedra);
+    }
+
+    temPedraAnalitica (pedra) {
+        var aux = false;
+        this.#jogo.forEach((minhaPedra) => {
+            if ( (minhaPedra.ladoA == pedra.ladoA) || (minhaPedra.ladoA == pedra.ladoB)
+                 || (minhaPedra.ladoB == pedra.ladoA)|| (minhaPedra.ladoB ==pedra.ladoB)) {
+
+                    aux = true;
+            }
+        
+        });
+        return aux;
+    }
+
 
 }
